@@ -153,7 +153,15 @@ dotnet run --project src/RavenLedger.Ingestion.Api
 
 ## Logging
 
-Logs são emitidos em formato JSON (CLEF via Serilog) no stdout. Ao iniciar, a aplicação emite:
+Logs são emitidos em formato JSON via Serilog no stdout, usando `ExpressionTemplate` com o template:
+
+```
+{ {date: @t, level: @l, message: @m, exception: @x, ..@p} }
+```
+
+Cada linha de log é um objeto JSON com os campos `date`, `level`, `message`, `exception` e todas as propriedades structured da mensagem (spread via `..@p`). A configuração completa fica no `appsettings.json` sob a chave `Serilog`.
+
+Ao iniciar, a aplicação emite:
 
 - `Information` — versão e timestamp UTC de início
 - `Warning` — versão e timestamp UTC de encerramento

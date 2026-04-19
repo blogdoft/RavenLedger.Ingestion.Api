@@ -6,6 +6,13 @@ Este guia explica os componentes de observabilidade da stack de desenvolvimento 
 
 ## Componentes
 
+### Serilog (Logging)
+
+**O que é:** biblioteca de logging estruturado para .NET.  
+**Como funciona:** substitui o provider de logging padrão do .NET. Configurado via seção `Serilog` no `appsettings.json`, emite logs em formato CLEF (Compact Log Event Format) no stdout dos containers.  
+**Propósito:** produzir logs JSON estruturados com campos padronizados (`date`, `level`, `message`, `exception`) que o Promtail coleta e envia ao Loki.  
+**Acesso:** logs aparecem no stdout — sem interface dedicada; consulte pelo Grafana/Loki.
+
 ### Prometheus
 
 **O que é:** banco de dados de séries temporais para métricas.  
@@ -89,7 +96,7 @@ O Grafana já vem com o datasource **Loki** provisionado automaticamente. Para c
    - O container da API normalmente se chama `docker-api-1`.
 5. Clique em **Run query** (ou pressione `Shift+Enter`).
 
-Os logs aparecerão em ordem cronológica inversa. O conteúdo é JSON (formato CLEF do Serilog); o Grafana exibe o campo `message` por padrão.
+Os logs aparecerão em ordem cronológica inversa. O conteúdo é JSON (campos `date`, `level`, `message`, `exception` + propriedades da mensagem); o Grafana exibe o campo `message` por padrão.
 
 ### Filtros úteis no LogQL
 
@@ -98,7 +105,7 @@ Os logs aparecerão em ordem cronológica inversa. O conteúdo é JSON (formato 
 {container="docker-api-1"}
 
 # Apenas logs de nível Warning ou superior
-{container="docker-api-1"} | json | level >= "Warning"
+{container="docker-api-1"} | json | level = "Warning"
 
 # Busca por texto livre
 {container="docker-api-1"} |= "exception"

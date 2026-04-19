@@ -1,6 +1,5 @@
 using RavenLedger.Ingestion.Api.Observability;
 using Serilog;
-using Serilog.Formatting.Compact;
 using System.Reflection;
 
 var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
@@ -10,8 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, services, configuration) =>
     configuration
         .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .WriteTo.Console(new CompactJsonFormatter()));
+        .ReadFrom.Services(services));
 
 builder.Services.AddOpenApi();
 builder.AddObservability();
