@@ -2,7 +2,9 @@
 
 This system will use Serilog as log library.
 
-Logs output must be on json format.
+Logs output must be on json format with template `"{ {date: @t, level: @l, message: @m, exception: @x, ..@p} }" + Environment.NewLine; `.
+
+The Log setup must be called by a extension method, into `./src/RavenLedger.Ingest.Api/Observability/LogExtension.cs`.
 
 Application must emmit a Informational Log when starts and a Warning Log when shutdown, including version and date time utc-0.
 

@@ -1,0 +1,17 @@
+# Exclude everything by default, then allow only what the build needs
+**
+
+# Solution and build infrastructure
+!Directory.Build.props
+!stylecop.json
+!./**/*.sln
+
+# Application source
+!src/RavenLedger.Ingestion.Api/appsettings.json
+
+!./**/*.csproj
+!./**/*.cs
+!./**/appsettings.json
+!./**/appsettings.Development.json
+!.editorconfig
+
