@@ -1,4 +1,5 @@
 using System.Reflection;
+using RavenLedger.Ingestion.Api.Observability;
 using Serilog;
 using Serilog.Formatting.Compact;
 
@@ -13,6 +14,7 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .WriteTo.Console(new CompactJsonFormatter()));
 
 builder.Services.AddOpenApi();
+builder.AddObservability();
 
 var app = builder.Build();
 
@@ -23,6 +25,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseSerilogRequestLogging();
+app.UseObservability();
 
 app.Lifetime.ApplicationStarted.Register(() =>
 {
