@@ -79,21 +79,21 @@ A stack de desenvolvimento inclui coleta distribuída de traces, métricas, logs
 
 ### Diagrama de relacionamento
 
-```
-           HTTP
-Cliente ──────────► Nginx :8080 ──► API :8080
-                                      │
-                         ┌────────────┼────────────┐
-                         ▼            ▼             ▼
-                    Jaeger         Zipkin       stdout (JSON)
-                    :4317           :9411            │
-                  (OTLP gRPC)                    Promtail
-                      │                              │
-                   Grafana ◄─── Prometheus ◄─ /metrics
-                   :3000          :9090
-                      │
-                     Loki
-                    :3100
+```mermaid
+flowchart TD
+    Cliente -->|HTTP| Nginx["Nginx\n:8080"]
+    Nginx -->|proxy| API["RavenLedger.Ingestion.Api\n:8080"]
+
+    API -->|"OTLP gRPC"| Jaeger["Jaeger\n:4317"]
+    API -->|HTTP| Zipkin["Zipkin\n:9411"]
+    API -->|stdout JSON| Promtail["Promtail"]
+    API -->|"scrape /metrics"| Prometheus["Prometheus\n:9090"]
+
+    Promtail -->|push| Loki["Loki\n:3100"]
+
+    Grafana["Grafana\n:3000"] -->|datasource| Jaeger
+    Grafana -->|datasource| Prometheus
+    Grafana -->|datasource| Loki
 ```
 
 | Serviço        | Protocolo recebido         | Finalidade                          |
