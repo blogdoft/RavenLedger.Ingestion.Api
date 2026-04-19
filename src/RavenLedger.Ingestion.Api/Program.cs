@@ -1,7 +1,7 @@
-using System.Reflection;
 using RavenLedger.Ingestion.Api.Observability;
 using Serilog;
 using Serilog.Formatting.Compact;
+using System.Reflection;
 
 var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
 
